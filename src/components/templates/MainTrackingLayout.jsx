@@ -3,6 +3,8 @@ import { motion } from 'framer-motion'
 import { variants } from '@/motion/motionSystem'
 import Navbar from '../organisms/Navbar'
 import Sidebar from '../organisms/Sidebar'
+import CoachAvatar from '../organisms/CoachAvatar'
+import BackgroundParticles from '../atoms/BackgroundParticles'
 
 export default function MainTrackingLayout({ left, right, footer }) {
   return (
@@ -12,6 +14,7 @@ export default function MainTrackingLayout({ left, right, footer }) {
       initial="hidden"
       animate="show"
     >
+      <BackgroundParticles />
       <Navbar />
       <Sidebar />
       <motion.main
@@ -30,6 +33,7 @@ export default function MainTrackingLayout({ left, right, footer }) {
         </motion.aside>
       </motion.main>
       {footer}
+      <CoachAvatar />
     </motion.div>
   )
 }

@@ -7,6 +7,7 @@ import coachReact from '@/animations/coachReact.json'
 import { useAppStore } from '@/store/useAppStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { variants } from '@/motion/motionSystem'
+import TypewriterTip from '@/components/molecules/TypewriterTip'
 
 export default function FeedbackPanel() {
   const analyzing = useAppStore((s) => s.analyzing)
@@ -52,6 +53,7 @@ export default function FeedbackPanel() {
           <FeedbackBubble />
         </motion.div>
       </motion.div>
+      <TypewriterTip />
       <div className="flex justify-end">
         <EndSessionModal />
       </div>

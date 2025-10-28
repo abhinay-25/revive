@@ -48,5 +48,21 @@ export function useSoundFeedback() {
     o.stop(ctx.currentTime + 0.2)
   }, [])
 
-  return { beep, chime, warn }
+  const click = useCallback(() => beep(420, 60, 'triangle', 0.03), [beep])
+  const success = useCallback(() => { chime() }, [chime])
+  const error = useCallback(() => {
+    const ctx = getCtx(); if (!ctx) return
+    const o = ctx.createOscillator(); const g = ctx.createGain()
+    o.type = 'sawtooth'
+    o.frequency.setValueAtTime(300, ctx.currentTime)
+    o.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.25)
+    g.gain.value = 0.035
+    o.connect(g); g.connect(ctx.destination)
+    o.start(); o.stop(ctx.currentTime + 0.26)
+  }, [])
+  const vibrate = useCallback((pattern = [20]) => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(pattern)
+  }, [])
+
+  return { beep, chime, warn, click, success, error, vibrate }
 }

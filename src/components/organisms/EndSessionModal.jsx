@@ -23,11 +23,14 @@ export default function EndSessionModal() {
   const totalReps = useAppStore((s) => s.totalReps)
   const seconds = useAppStore((s) => s.secondsElapsed)
   const avgQuality = useAppStore((s) => s.repQuality)
+  const currentSet = useAppStore((s) => s.currentSet)
+  const totalSets = useAppStore((s) => s.totalSets)
   const timeText = useMemo(() => {
     const m = Math.floor(seconds / 60)
     const s = seconds % 60
     return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
   }, [seconds])
+  const calories = useMemo(() => Math.round(((currentSet - 1) * totalReps + repCount) * 0.8), [currentSet, totalReps, repCount])
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -48,18 +51,21 @@ export default function EndSessionModal() {
           </DialogClose>
         </DialogHeader>
         <DialogDescription className="mb-2">
-          You can save your progress and review metrics later.
+          Great job, Abhinay! You crushed it today 💪🔥
         </DialogDescription>
         <motion.div className="mt-2 grid grid-cols-3 gap-3 text-center"
           initial="hidden" animate="show"
           variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}>
-          {[{label:'Reps', value:`${repCount} / ${totalReps}`}, {label:'Avg Quality', value:`${avgQuality}%`}, {label:'Duration', value: timeText}].map((m) => (
+          {[{label:'Reps', value:`${repCount} / ${totalReps}`}, {label:'Avg Quality', value:`${avgQuality}%`}, {label:'Duration', value: timeText}, {label:'Calories', value: `${calories}`}].map((m) => (
             <motion.div key={m.label} variants={{ hidden:{ opacity:0, y:6 }, show:{ opacity:1, y:0 } }} className="glass rounded-xl p-3">
               <div className="text-[11px] text-white/60">{m.label}</div>
               <div className="text-lg font-bold">{m.value}</div>
             </motion.div>
           ))}
         </motion.div>
+        <div className="mt-3 text-xs text-white/70">
+          Tip: Focus on smooth, controlled tempo and keep your elbow slightly higher on the lift.
+        </div>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
@@ -78,6 +84,9 @@ export default function EndSessionModal() {
           >
             Save & End
           </motion.button>
+          <Button variant="secondary" className="gradient-sweep">Replay Session</Button>
+          <Button variant="secondary" className="gradient-sweep">Save Report</Button>
+          <Button variant="secondary" className="gradient-sweep">Share Achievement</Button>
         </DialogFooter>
       </DialogContent>
       {celebrate && (
