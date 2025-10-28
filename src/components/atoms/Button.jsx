@@ -7,7 +7,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'text-white gradient-brand shadow-ai hover:brightness-110',
+  primary: 'text-white gradient-brand gradient-sweep shadow-ai hover:brightness-110',
         secondary: 'text-white glass hover:bg-white/10',
         ghost: 'text-white/80 hover:text-white hover:bg-white/5',
       },

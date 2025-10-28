@@ -1,12 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Settings, HelpCircle, UserCircle2 } from 'lucide-react'
 import StatusIndicator from '../atoms/StatusIndicator'
 import ThemeToggle from '../atoms/ThemeToggle'
+import { motion } from 'framer-motion'
 
 export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 6)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <nav className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/5 bg-white/0 dark:bg-black/0 border-b border-white/10">
-      <div className="container py-3 flex items-center justify-between">
+    <motion.nav
+      layout
+      className={`sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/5 bg-white/0 dark:bg-black/0 border-b border-white/10`}
+      animate={{ backdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)' }}
+      transition={{ type: 'tween', duration: 0.25 }}
+    >
+      <div className={`container ${scrolled ? 'py-2' : 'py-3'} transition-[padding] duration-300 flex items-center justify-between`}>
         <div className="flex items-center gap-4">
           <div className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 text-transparent bg-clip-text">
             PhysioTrack AI
@@ -27,6 +41,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   )
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import { cn } from '@/lib/utils'
 
@@ -18,4 +19,13 @@ export default function Slider({ className, value = [50], min = 0, max = 100, st
       <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full glass border border-white/20 shadow-glow" aria-label="Value" />
     </SliderPrimitive.Root>
   )
+}
+
+Slider.propTypes = {
+  className: PropTypes.string,
+  value: PropTypes.arrayOf(PropTypes.number),
+  min: PropTypes.number,
+  max: PropTypes.number,
+  step: PropTypes.number,
+  onValueChange: PropTypes.func,
 }
