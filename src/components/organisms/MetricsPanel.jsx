@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import StatusIndicator from '../atoms/StatusIndicator'
-import { Slider } from '@/components/ui/slider'
 import { useAppStore } from '../../store/useAppStore'
 import { useSoundFeedback } from '../../hooks/useSoundFeedback'
 import QualityRing from '@/components/molecules/QualityRing'
@@ -293,13 +292,15 @@ export default function MetricsPanel() {
           Sensitivity
         </label>
         <div className="flex items-center gap-3">
-          <Slider
-            value={[70]}
-            min={0}
-            max={100}
-            step={1}
-            onValueChange={() => {}}
-            className="flex-1"
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="70"
+            className="flex-1 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+            style={{
+              background: `linear-gradient(to right, #8b5cf6 0%, #8b5cf6 70%, rgba(255,255,255,0.2) 70%, rgba(255,255,255,0.2) 100%)`,
+            }}
           />
           <span className="text-sm font-semibold text-white/90 min-w-[3rem] text-right">70%</span>
         </div>
