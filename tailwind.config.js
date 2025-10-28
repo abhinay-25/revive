@@ -26,9 +26,9 @@ export default {
         blush: '#F472B6',
       },
       fontFamily: {
-        heading: ['Poppins', 'Plus Jakarta Sans', 'Inter', 'system-ui', 'Arial', 'sans-serif'],
-        body: ['Inter', 'Plus Jakarta Sans', 'system-ui', 'Arial', 'sans-serif'],
-        numeric: ['Orbitron', 'Rajdhani', 'Inter', 'sans-serif'],
+        heading: ['Outfit', 'Poppins', 'Plus Jakarta Sans', 'Inter', 'system-ui', 'Arial', 'sans-serif'],
+        body: ['Inter', 'Outfit', 'Plus Jakarta Sans', 'system-ui', 'Arial', 'sans-serif'],
+        numeric: ['Orbitron', 'Rajdhani', 'Outfit', 'Inter', 'sans-serif'],
       },
       backdropBlur: {
         xs: '2px',
