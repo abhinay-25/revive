@@ -1,11 +1,11 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import TrackingPage from './pages/TrackingPage'
+import './styles/globals.css'
+import MainTrackingPage from './pages/MainTrackingPage'
 
 const root = createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <TrackingPage />
+  <MainTrackingPage />
   </React.StrictMode>
 )
