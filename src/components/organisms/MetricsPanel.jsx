@@ -1,46 +1,21 @@
 import React, { useEffect, useMemo, useRef } from 'react'
-import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import StatusIndicator from '../atoms/StatusIndicator'
 import { Progress as ProgressBar } from '@/components/ui/progress'
 import { Slider } from '@/components/ui/slider'
 import { useAppStore } from '../../store/useAppStore'
 import { useSoundFeedback } from '../../hooks/useSoundFeedback'
+import QualityRing from '@/components/molecules/QualityRing'
+import ParticleBurst from '@/components/molecules/ParticleBurst'
 
-function Gauge({ value = 75 }) {
-  const clamped = Math.max(0, Math.min(100, value))
-  const deg = useMotionValue(clamped * 3.6)
-  const springDeg = useSpring(deg, { stiffness: 160, damping: 24 })
-  useEffect(() => {
-    deg.set(clamped * 3.6)
-  }, [clamped, deg])
-  const [display, setDisplay] = useState(clamped)
-  useEffect(() => {
-    setDisplay(clamped)
-  }, [clamped])
-  const color = clamped >= 85 ? '#10B981' : clamped >= 60 ? '#F59E0B' : '#EF4444'
-  return (
-    <div className="relative w-28 h-28">
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        style={{
-          background: springDeg.to(
-            (d) => `conic-gradient(${color} ${d}deg, rgba(255,255,255,0.1) 0deg)`
-          ),
-        }}
-      />
-      <div className="absolute inset-2 rounded-full bg-black/40 backdrop-blur border border-white/10" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-xl font-bold text-white">{display}%</div>
-      </div>
-    </div>
-  )
-}
+// replaced legacy Gauge with QualityRing
 
 export default function MetricsPanel() {
   const repCount = useAppStore((s) => s.repCount)
   const repQuality = useAppStore((s) => s.repQuality)
   const seconds = useAppStore((s) => s.secondsElapsed)
   const aiStatus = useAppStore((s) => s.aiStatus)
+  const currentSet = useAppStore((s) => s.currentSet)
   const { chime } = useSoundFeedback()
   const prevRep = useRef(repCount)
   useEffect(() => {
@@ -65,14 +40,15 @@ export default function MetricsPanel() {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <div className="text-xs text-white/60">Reps</div>
-          <div className="relative inline-block text-4xl font-bold text-primary">
+          <div className="relative inline-block text-4xl font-bold">
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={repCount}
-                initial={{ y: 8, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -8, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                initial={{ scale: 1, opacity: 0 }}
+                animate={{ scale: [1, 1.25, 1], opacity: 1, color: (repQuality ?? 0) >= 90 ? '#10B981' : '#60A5FA' }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, type: 'spring', stiffness: 120, damping: 15 }}
+                className="font-numeric"
               >
                 {String(repCount).padStart(2, '0')}
               </motion.span>
@@ -92,11 +68,16 @@ export default function MetricsPanel() {
                 />
               )}
             </AnimatePresence>
+            <AnimatePresence>
+              <ParticleBurst key={`burst-${currentSet}`} triggerKey={currentSet} />
+            </AnimatePresence>
           </div>
         </div>
         <div>
           <div className="text-xs text-white/60">Sets</div>
-          <div className="text-4xl font-bold">2 / 3</div>
+          <div className="text-4xl font-bold">
+            {useAppStore((s) => s.currentSet)} / {useAppStore((s) => s.totalSets)}
+          </div>
         </div>
         <div>
           <div className="text-xs text-white/60">Timer</div>
@@ -124,7 +105,7 @@ export default function MetricsPanel() {
           <div className="text-xs text-white/60 mb-1">Quality</div>
           <ProgressBar value={quality} className="w-48" />
         </div>
-        <Gauge value={quality} />
+  <QualityRing value={quality} />
       </div>
       <div className="mt-4">
         <label htmlFor="sensitivity" className="text-xs text-white/60 mb-1 block">

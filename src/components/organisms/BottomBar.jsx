@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
+import { motion } from 'framer-motion'
 import { useAppStore } from '@/store/useAppStore'
 
 export default function BottomBar() {
@@ -28,7 +29,9 @@ export default function BottomBar() {
             <div className="text-white font-bold">{timeText}</div>
           </div>
         </div>
-        <Button className="rounded-full h-10 px-5 end-session-ripple">End Session</Button>
+        <motion.div whileTap={{ scale: 0.95 }} transition={{ type: 'spring', stiffness: 160, damping: 18 }}>
+          <Button className="rounded-full h-10 px-5 end-session-ripple">End Session</Button>
+        </motion.div>
       </div>
     </div>
   )

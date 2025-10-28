@@ -15,6 +15,8 @@ export const useAppStore = create((set) => ({
   aiStatus: 'Tracking Active',
   currentExercise: 'Shoulder Rotation',
   totalReps: 10,
+  currentSet: 1,
+  totalSets: 3,
   repQuality: 90,
   secondsElapsed: 0,
   setAnalyzing: (val) => set({ analyzing: val }),
@@ -23,4 +25,5 @@ export const useAppStore = create((set) => ({
   setRepQuality: (val) => set({ repQuality: val }),
   setSecondsElapsed: (val) => set({ secondsElapsed: val }),
   setSessionActive: (val) => set({ sessionActive: val }),
+  setCurrentSet: (updater) => set((s) => ({ currentSet: typeof updater === 'function' ? updater(s.currentSet) : updater })),
 }))

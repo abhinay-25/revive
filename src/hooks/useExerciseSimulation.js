@@ -8,6 +8,8 @@ export function useExerciseSimulation(enabled = true) {
   const {
     repCount,
     totalReps,
+    currentSet,
+    totalSets,
     setRepCount,
     setAnalyzing,
     setAiFeedback,
@@ -17,9 +19,12 @@ export function useExerciseSimulation(enabled = true) {
     setSecondsElapsed,
     sessionActive,
     setSessionActive,
+    setCurrentSet,
   } = useAppStore((s) => ({
     repCount: s.repCount,
     totalReps: s.totalReps,
+    currentSet: s.currentSet,
+    totalSets: s.totalSets,
     setRepCount: s.setRepCount,
     setAnalyzing: s.setAnalyzing,
     setAiFeedback: s.setAiFeedback,
@@ -29,6 +34,7 @@ export function useExerciseSimulation(enabled = true) {
     setSecondsElapsed: s.setSecondsElapsed,
     sessionActive: s.sessionActive,
     setSessionActive: s.setSessionActive,
+    setCurrentSet: s.setCurrentSet,
   }))
 
   const repRef = useRef(repCount)
@@ -81,12 +87,20 @@ export function useExerciseSimulation(enabled = true) {
 
         // Increment rep if session active and not finished
         setRepCount((prev) => {
-          const next = (typeof prev === 'number' ? prev : 0) + 1
+          const prevNum = typeof prev === 'number' ? prev : 0
+          const next = prevNum + 1
           if (next >= totalReps) {
-            // End session automatically when reaching total reps
-            setSessionActive(false)
+            if (currentSet < totalSets) {
+              // complete set, reset reps and advance set
+              setCurrentSet((v) => v + 1)
+              return 0
+            } else {
+              // final set complete: end session
+              setSessionActive(false)
+              return totalReps
+            }
           }
-          return Math.min(next, totalReps)
+          return next
         })
       }
     }
@@ -100,5 +114,5 @@ export function useExerciseSimulation(enabled = true) {
       clearInterval(interval)
       clearTimeout(kickoff)
     }
-  }, [enabled, setAnalyzing, setAiFeedback, setAiStatus, setRepQuality, setRepCount, setSessionActive, totalReps])
+  }, [enabled, setAnalyzing, setAiFeedback, setAiStatus, setRepQuality, setRepCount, setSessionActive, totalReps, currentSet, totalSets, setCurrentSet])
 }

@@ -10,7 +10,8 @@ import {
   DialogClose,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react'
+import { X, Trophy } from 'lucide-react'
+import { motion } from 'framer-motion'
 import Lottie from '@/components/molecules/LottieLazy'
 import confetti from '@/animations/confettiBurst.json'
 import { useAppStore } from '@/store/useAppStore'
@@ -36,7 +37,12 @@ export default function EndSessionModal() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>End Session?</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <motion.span initial={{ rotate: 0 }} animate={{ rotate: 720 }} transition={{ duration: 0.8 }}>
+              <Trophy className="w-6 h-6 text-yellow-300" />
+            </motion.span>
+            End Session?
+          </DialogTitle>
           <DialogClose className="p-1 hover:bg-white/10 rounded-lg">
             <X className="w-5 h-5" />
           </DialogClose>
@@ -44,25 +50,22 @@ export default function EndSessionModal() {
         <DialogDescription className="mb-2">
           You can save your progress and review metrics later.
         </DialogDescription>
-        <div className="mt-2 grid grid-cols-3 gap-3 text-center">
-          <div className="glass rounded-xl p-3">
-            <div className="text-[11px] text-white/60">Reps</div>
-            <div className="text-lg font-bold">{repCount} / {totalReps}</div>
-          </div>
-          <div className="glass rounded-xl p-3">
-            <div className="text-[11px] text-white/60">Avg Quality</div>
-            <div className="text-lg font-bold">{avgQuality}%</div>
-          </div>
-          <div className="glass rounded-xl p-3">
-            <div className="text-[11px] text-white/60">Duration</div>
-            <div className="text-lg font-bold">{timeText}</div>
-          </div>
-        </div>
+        <motion.div className="mt-2 grid grid-cols-3 gap-3 text-center"
+          initial="hidden" animate="show"
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}>
+          {[{label:'Reps', value:`${repCount} / ${totalReps}`}, {label:'Avg Quality', value:`${avgQuality}%`}, {label:'Duration', value: timeText}].map((m) => (
+            <motion.div key={m.label} variants={{ hidden:{ opacity:0, y:6 }, show:{ opacity:1, y:0 } }} className="glass rounded-xl p-3">
+              <div className="text-[11px] text-white/60">{m.label}</div>
+              <div className="text-lg font-bold">{m.value}</div>
+            </motion.div>
+          ))}
+        </motion.div>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
           </DialogClose>
-          <Button
+          <motion.button
+            className="end-session-ripple inline-flex items-center justify-center rounded-md bg-white/10 px-4 py-2 border border-white/10"
             onClick={() => {
               setCelebrate(true)
               setTimeout(() => {
@@ -70,9 +73,11 @@ export default function EndSessionModal() {
                 setTimeout(() => setCelebrate(false), 1200)
               }, 200)
             }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 160, damping: 18 }}
           >
             Save & End
-          </Button>
+          </motion.button>
         </DialogFooter>
       </DialogContent>
       {celebrate && (
