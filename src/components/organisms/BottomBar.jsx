@@ -19,7 +19,7 @@ export default function BottomBar() {
             <div className="text-white font-bold">02:35</div>
           </div>
         </div>
-        <Button className="rounded-full h-10 px-5">End Session</Button>
+        <Button className="rounded-full h-10 px-5 end-session-ripple">End Session</Button>
       </div>
     </div>
   )
