@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
 import StatusIndicator from '../atoms/StatusIndicator'
 import { Progress as ProgressBar } from '@/components/ui/progress'
@@ -17,13 +17,14 @@ function Gauge({ value = 75 }) {
   useEffect(() => {
     setDisplay(clamped)
   }, [clamped])
+  const color = clamped >= 85 ? '#10B981' : clamped >= 60 ? '#F59E0B' : '#EF4444'
   return (
     <div className="relative w-28 h-28">
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
           background: springDeg.to(
-            (d) => `conic-gradient(#6366F1 ${d}deg, rgba(255,255,255,0.1) 0deg)`
+            (d) => `conic-gradient(${color} ${d}deg, rgba(255,255,255,0.1) 0deg)`
           ),
         }}
       />
@@ -42,18 +43,10 @@ export default function MetricsPanel() {
   const aiStatus = useAppStore((s) => s.aiStatus)
   const { chime } = useSoundFeedback()
   const prevRep = useRef(repCount)
-  const [perfectPulse, setPerfectPulse] = useState(false)
   useEffect(() => {
-    if (repCount > prevRep.current) {
-      chime()
-      if ((repQuality ?? 0) >= 90) {
-        setPerfectPulse(true)
-        const t = setTimeout(() => setPerfectPulse(false), 600)
-        return () => clearTimeout(t)
-      }
-    }
+    if (repCount > prevRep.current) chime()
     prevRep.current = repCount
-  }, [repCount, repQuality, chime])
+  }, [repCount, chime])
   const timeText = useMemo(() => {
     const m = Math.floor(seconds / 60)
     const s = seconds % 60
@@ -85,7 +78,7 @@ export default function MetricsPanel() {
               </motion.span>
             </AnimatePresence>
             <AnimatePresence>
-              {perfectPulse && (
+              {(repQuality ?? 0) >= 90 && (
                 <motion.span
                   key={`pulse-${repCount}`}
                   className="absolute -inset-1 rounded-lg"
