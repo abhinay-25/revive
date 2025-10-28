@@ -14,16 +14,27 @@ export default {
         primary: '#6366F1', // soft indigo-blue
         accent: '#8B5CF6', // violet accent
         bgDark: '#0F172A',
+        surfaceLight: '#F9FAFB',
+        success: '#22C55E',
+        error: '#EF4444',
+        warning: '#F59E0B',
         glass: 'rgba(255, 255, 255, 0.08)',
+      },
+      fontFamily: {
+        heading: ['Poppins', 'Inter', 'system-ui', 'Arial', 'sans-serif'],
+        body: ['Inter', 'system-ui', 'Arial', 'sans-serif'],
+        numeric: ['Orbitron', 'Rajdhani', 'Inter', 'sans-serif'],
       },
       backdropBlur: {
         xs: '2px',
       },
       boxShadow: {
         glow: '0 0 15px rgba(99, 102, 241, 0.4)',
+        ai: '0 4px 30px rgba(99, 102, 241, 0.15)',
       },
       backgroundImage: {
         'blue-violet-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)',
+        'brand-gradient': 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
       },
       container: {
         center: true,
@@ -34,6 +45,27 @@ export default {
           lg: '3rem',
           xl: '4rem',
         },
+        screens: {
+          sm: '640px',
+          md: '768px',
+          lg: '1024px',
+          xl: '1280px',
+          '2xl': '1280px',
+        },
+      },
+      keyframes: {
+        'float-in': {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 0px rgba(99, 102, 241, 0.0)' },
+          '50%': { boxShadow: '0 0 24px rgba(99, 102, 241, 0.45)' },
+        },
+      },
+      animation: {
+        'float-in': 'float-in 400ms ease-out both',
+        'pulse-glow': 'pulse-glow 1200ms ease-in-out infinite',
       },
     },
   },
