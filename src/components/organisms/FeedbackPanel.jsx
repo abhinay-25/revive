@@ -15,23 +15,21 @@ export default function FeedbackPanel() {
     (aiFeedback || '').toLowerCase().includes('good')
   return (
     <motion.div layout className="flex flex-col gap-4">
-      <div className="flex items-center gap-3">
-        <div className="w-36 h-10 glass rounded-xl flex items-center">
-          <Lottie animationData={aiWave} loop autoplay style={{ width: '100%', height: '100%' }} />
-        </div>
-        <AnimatePresence>
-          {analyzing && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-xs text-white/70"
-            >
-              Analyzing...
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </div>
+      <AnimatePresence>
+        {analyzing && (
+          <motion.div
+            className="flex items-center gap-3"
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+          >
+            <div className="w-36 h-10 glass rounded-xl flex items-center overflow-hidden">
+              <Lottie animationData={aiWave} loop autoplay style={{ width: '100%', height: '100%' }} />
+            </div>
+            <motion.span className="text-xs text-white/70">Analyzing...</motion.span>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="flex items-center gap-2">
         <div className="w-10 h-10">
           <Lottie animationData={coachReact} loop autoplay />

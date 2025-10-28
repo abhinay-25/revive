@@ -37,27 +37,30 @@ function Gauge({ value = 75 }) {
 
 export default function MetricsPanel() {
   const repCount = useAppStore((s) => s.repCount)
+  const repQuality = useAppStore((s) => s.repQuality)
+  const seconds = useAppStore((s) => s.secondsElapsed)
+  const aiStatus = useAppStore((s) => s.aiStatus)
   const { chime } = useSoundFeedback()
   const prevRep = useRef(repCount)
+  const [perfectPulse, setPerfectPulse] = useState(false)
   useEffect(() => {
     if (repCount > prevRep.current) {
       chime()
+      if ((repQuality ?? 0) >= 90) {
+        setPerfectPulse(true)
+        const t = setTimeout(() => setPerfectPulse(false), 600)
+        return () => clearTimeout(t)
+      }
     }
     prevRep.current = repCount
-  }, [repCount, chime])
-
-  const [seconds, setSeconds] = useState(155)
-  useEffect(() => {
-    const id = setInterval(() => setSeconds((s) => s + 1), 1000)
-    return () => clearInterval(id)
-  }, [])
+  }, [repCount, repQuality, chime])
   const timeText = useMemo(() => {
     const m = Math.floor(seconds / 60)
     const s = seconds % 60
     return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
   }, [seconds])
 
-  const quality = 96
+  const quality = repQuality ?? 0
 
   return (
     <motion.div
@@ -69,7 +72,7 @@ export default function MetricsPanel() {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <div className="text-xs text-white/60">Reps</div>
-          <div className="text-4xl font-bold text-primary">
+          <div className="relative inline-block text-4xl font-bold text-primary">
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={repCount}
@@ -80,6 +83,21 @@ export default function MetricsPanel() {
               >
                 {String(repCount).padStart(2, '0')}
               </motion.span>
+            </AnimatePresence>
+            <AnimatePresence>
+              {perfectPulse && (
+                <motion.span
+                  key={`pulse-${repCount}`}
+                  className="absolute -inset-1 rounded-lg"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 0.6, scale: 1.1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{
+                    boxShadow: '0 0 0 4px rgba(16,185,129,0.3), 0 0 30px rgba(16,185,129,0.35) inset',
+                  }}
+                />
+              )}
             </AnimatePresence>
           </div>
         </div>
@@ -105,7 +123,7 @@ export default function MetricsPanel() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <StatusIndicator status="active" />
+          <StatusIndicator status={aiStatus?.toLowerCase?.().includes('analyz') ? 'analyzing' : aiStatus?.toLowerCase?.().includes('paused') ? 'paused' : 'active'} />
         </div>
       </div>
       <div className="mt-4 flex items-center justify-between">

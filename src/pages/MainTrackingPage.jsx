@@ -4,8 +4,11 @@ import VideoSection from '../components/organisms/VideoSection'
 import MetricsPanel from '../components/organisms/MetricsPanel'
 import FeedbackPanel from '../components/organisms/FeedbackPanel'
 import BottomBar from '../components/organisms/BottomBar'
+import { useExerciseSimulation } from '@/hooks/useExerciseSimulation'
 
 export default function MainTrackingPage() {
+  // start simulation on mount
+  useExerciseSimulation(true)
   return (
     <MainTrackingLayout
       left={<>
