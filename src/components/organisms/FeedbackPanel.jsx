@@ -1,7 +1,7 @@
 import React from 'react'
 import FeedbackBubble from '../molecules/FeedbackBubble'
 import EndSessionModal from './EndSessionModal'
-import Lottie from 'lottie-react'
+import Lottie from '@/components/molecules/LottieLazy'
 import aiWave from '@/animations/aiWave.json'
 import coachReact from '@/animations/coachReact.json'
 import { useAppStore } from '@/store/useAppStore'
@@ -10,7 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function FeedbackPanel() {
   const analyzing = useAppStore((s) => s.analyzing)
   const aiFeedback = useAppStore((s) => s.aiFeedback)
-  const positive = (aiFeedback || '').toLowerCase().includes('perfect') || (aiFeedback || '').toLowerCase().includes('good')
+  const positive =
+    (aiFeedback || '').toLowerCase().includes('perfect') ||
+    (aiFeedback || '').toLowerCase().includes('good')
   return (
     <motion.div layout className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
@@ -19,7 +21,12 @@ export default function FeedbackPanel() {
         </div>
         <AnimatePresence>
           {analyzing && (
-            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-xs text-white/70">
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-xs text-white/70"
+            >
               Analyzing...
             </motion.span>
           )}

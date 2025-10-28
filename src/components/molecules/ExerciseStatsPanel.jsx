@@ -1,6 +1,6 @@
 import React from 'react'
 import MetricCard from '../MetricCard'
-import ProgressBar from '../atoms/ProgressBar'
+import { Progress as ProgressBar } from '@/components/ui/progress'
 
 export default function ExerciseStatsPanel() {
   return (

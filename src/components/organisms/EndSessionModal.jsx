@@ -11,9 +11,12 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
+import Lottie from '@/components/molecules/LottieLazy'
+import confetti from '@/animations/confettiBurst.json'
 
 export default function EndSessionModal() {
   const [open, setOpen] = React.useState(false)
+  const [celebrate, setCelebrate] = React.useState(false)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -35,11 +38,26 @@ export default function EndSessionModal() {
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
           </DialogClose>
-          <DialogClose asChild>
-            <Button>Save & End</Button>
-          </DialogClose>
+          <Button
+            onClick={() => {
+              setCelebrate(true)
+              setTimeout(() => {
+                setOpen(false)
+                setTimeout(() => setCelebrate(false), 1200)
+              }, 200)
+            }}
+          >
+            Save & End
+          </Button>
         </DialogFooter>
       </DialogContent>
+      {celebrate && (
+        <div className="fixed inset-0 pointer-events-none z-[60] flex items-center justify-center">
+          <div className="w-48 h-48">
+            <Lottie animationData={confetti} loop={false} autoplay />
+          </div>
+        </div>
+      )}
     </Dialog>
   )
 }
