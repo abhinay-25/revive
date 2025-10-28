@@ -5,55 +5,45 @@ import { useAppStore } from '@/store/useAppStore'
 // - Updates every 2.5s: analyzing -> feedback -> rep increment
 // - Maintains a 1s timer in store
 export function useExerciseSimulation(enabled = true) {
+  // Select only primitives with separate subscriptions (stable, no getSnapshot warnings)
+  const repCount = useAppStore((s) => s.repCount)
+  const totalReps = useAppStore((s) => s.totalReps)
+  const currentSet = useAppStore((s) => s.currentSet)
+  const totalSets = useAppStore((s) => s.totalSets)
+  const secondsElapsed = useAppStore((s) => s.secondsElapsed)
+  const sessionActive = useAppStore((s) => s.sessionActive)
+
+  // Grab setter functions once (they are stable in Zustand)
   const {
-    repCount,
-    totalReps,
-    currentSet,
-    totalSets,
     setRepCount,
     setAnalyzing,
     setAiFeedback,
     setAiStatus,
     setRepQuality,
-    secondsElapsed,
     setSecondsElapsed,
-    sessionActive,
     setSessionActive,
     setCurrentSet,
-  } = useAppStore((s) => ({
-    repCount: s.repCount,
-    totalReps: s.totalReps,
-    currentSet: s.currentSet,
-    totalSets: s.totalSets,
-    setRepCount: s.setRepCount,
-    setAnalyzing: s.setAnalyzing,
-    setAiFeedback: s.setAiFeedback,
-    setAiStatus: s.setAiStatus,
-    setRepQuality: s.setRepQuality,
-    secondsElapsed: s.secondsElapsed,
-    setSecondsElapsed: s.setSecondsElapsed,
-    sessionActive: s.sessionActive,
-    setSessionActive: s.setSessionActive,
-    setCurrentSet: s.setCurrentSet,
-  }))
+    pushRepHistory,
+  } = useAppStore.getState()
 
   const repRef = useRef(repCount)
   useEffect(() => {
     repRef.current = repCount
   }, [repCount])
 
-  // Timer tick
+  // Timer tick (only when session is active). Runs regardless of demo/simulation state so the timer is always real.
   useEffect(() => {
-    if (!enabled) return
+    if (!sessionActive) return
     const id = setInterval(() => {
-      setSecondsElapsed(secondsElapsed => secondsElapsed + 1)
+      setSecondsElapsed((secondsElapsed) => secondsElapsed + 1)
     }, 1000)
     return () => clearInterval(id)
-  }, [enabled, setSecondsElapsed])
+  }, [sessionActive, setSecondsElapsed])
 
   // Main simulation loop
   useEffect(() => {
     if (!enabled) return
+    if (!sessionActive) return
 
     let cancelled = false
 
@@ -89,6 +79,19 @@ export function useExerciseSimulation(enabled = true) {
         setRepCount((prev) => {
           const prevNum = typeof prev === 'number' ? prev : 0
           const next = prevNum + 1
+          // Append to rep history before potential set rollover
+          const repInSet = prevNum + 1
+          const id = (currentSet - 1) * totalReps + repInSet
+          const emoji = quality >= 90 ? '🔥' : quality >= 80 ? '💪' : quality < 60 ? '⚠️' : ''
+          pushRepHistory({
+            id,
+            setNumber: currentSet,
+            repInSet,
+            quality,
+            feedback,
+            emoji,
+            ts: Date.now(),
+          })
           if (next >= totalReps) {
             if (currentSet < totalSets) {
               // complete set, reset reps and advance set
@@ -114,5 +117,19 @@ export function useExerciseSimulation(enabled = true) {
       clearInterval(interval)
       clearTimeout(kickoff)
     }
-  }, [enabled, setAnalyzing, setAiFeedback, setAiStatus, setRepQuality, setRepCount, setSessionActive, totalReps, currentSet, totalSets, setCurrentSet])
+  }, [
+    enabled,
+    sessionActive,
+    setAnalyzing,
+    setAiFeedback,
+    setAiStatus,
+    setRepQuality,
+    setRepCount,
+    setSessionActive,
+    totalReps,
+    currentSet,
+    totalSets,
+    setCurrentSet,
+    pushRepHistory,
+  ])
 }

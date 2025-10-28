@@ -17,7 +17,18 @@ export default function FeedbackPanel() {
     (aiFeedback || '').toLowerCase().includes('perfect') ||
     (aiFeedback || '').toLowerCase().includes('good')
   return (
-    <motion.div layout className="flex flex-col gap-4">
+    <motion.div
+      layout
+      className="flex flex-col gap-4"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+      style={{
+        willChange: 'transform, opacity',
+        backfaceVisibility: 'hidden',
+        transform: 'translateZ(0)',
+      }}
+    >
       <AnimatePresence>
         {analyzing && (
           <motion.div
@@ -27,9 +38,14 @@ export default function FeedbackPanel() {
             exit={{ opacity: 0, y: -4 }}
           >
             <div className="w-36 h-10 glass rounded-xl flex items-center overflow-hidden">
-              <Lottie animationData={aiWave} loop autoplay style={{ width: '100%', height: '100%' }} />
+              <Lottie
+                animationData={aiWave}
+                loop
+                autoplay
+                style={{ width: '100%', height: '100%' }}
+              />
             </div>
-            <motion.span className="text-xs text-white/70 flex items-center gap-1">
+            <motion.span className="text-xs text-white/90 dark:text-white/70 flex items-center gap-1 px-2 py-1 rounded-md bg-black/30 dark:bg-black/40 backdrop-blur-sm shadow-sm">
               <span className="inline-flex">
                 <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-bounce [animation-delay:-0.2s]" />
                 <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-bounce mx-1" />
@@ -47,14 +63,21 @@ export default function FeedbackPanel() {
         <motion.div
           key={aiFeedback}
           initial={{ boxShadow: '0 0 0 0 rgba(255,255,255,0)' }}
-          animate={{ boxShadow: ['0 0 0 0 rgba(255,255,255,0)', '0 0 24px 4px rgba(99,102,241,0.35)', '0 0 0 0 rgba(255,255,255,0)'] }}
+          animate={{
+            boxShadow: [
+              '0 0 0 0 rgba(255,255,255,0)',
+              '0 0 24px 4px rgba(99,102,241,0.35)',
+              '0 0 0 0 rgba(255,255,255,0)',
+            ],
+          }}
           transition={{ duration: 0.6 }}
         >
           <FeedbackBubble />
         </motion.div>
       </motion.div>
       <TypewriterTip />
-      <div className="flex justify-end">
+      {/* Mobile end-session trigger; desktop uses FloatingEndSession */}
+      <div className="flex justify-end mb-24 md:hidden">
         <EndSessionModal />
       </div>
     </motion.div>

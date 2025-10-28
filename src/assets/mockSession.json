@@ -1,0 +1,14 @@
+{
+  "frames": [
+    { "rep": 1, "score": 92, "keypoints": [ {"x":120,"y":200,"confidence":0.9}, {"x":160,"y":210,"confidence":0.88}, {"x":140,"y":260,"confidence":0.86} ] },
+    { "rep": 1, "score": 91, "keypoints": [ {"x":121,"y":198,"confidence":0.91}, {"x":161,"y":208,"confidence":0.89}, {"x":141,"y":258,"confidence":0.87} ] },
+    { "rep": 1, "score": 90, "keypoints": [ {"x":122,"y":196,"confidence":0.92}, {"x":162,"y":206,"confidence":0.9},  {"x":142,"y":256,"confidence":0.88} ] },
+    { "rep": 2, "score": 88, "keypoints": [ {"x":124,"y":195,"confidence":0.9},  {"x":164,"y":204,"confidence":0.87}, {"x":144,"y":254,"confidence":0.86} ] },
+    { "rep": 2, "score": 93, "keypoints": [ {"x":126,"y":197,"confidence":0.92}, {"x":166,"y":206,"confidence":0.9},  {"x":146,"y":256,"confidence":0.89} ] },
+    { "rep": 2, "score": 95, "keypoints": [ {"x":128,"y":199,"confidence":0.93}, {"x":168,"y":208,"confidence":0.91}, {"x":148,"y":258,"confidence":0.9} ] },
+    { "rep": 3, "score": 72, "keypoints": [ {"x":122,"y":205,"confidence":0.88}, {"x":162,"y":214,"confidence":0.86}, {"x":142,"y":264,"confidence":0.84} ] },
+    { "rep": 3, "score": 78, "keypoints": [ {"x":120,"y":207,"confidence":0.88}, {"x":160,"y":216,"confidence":0.86}, {"x":140,"y":266,"confidence":0.84} ] },
+    { "rep": 4, "score": 97, "keypoints": [ {"x":118,"y":203,"confidence":0.93}, {"x":158,"y":212,"confidence":0.91}, {"x":138,"y":262,"confidence":0.89} ] },
+    { "rep": 4, "score": 94, "keypoints": [ {"x":116,"y":201,"confidence":0.92}, {"x":156,"y":210,"confidence":0.9},  {"x":136,"y":260,"confidence":0.88} ] }
+  ]
+}

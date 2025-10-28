@@ -1,3 +1,40 @@
+# Physio Tracker UI — Accessibility & Responsive Enhancements
+
+This UI targets WCAG AA and great UX across devices.
+
+## Keyboard Shortcuts
+- Space — Pause/Resume session
+- E — End session (opens summary modal)
+- R — Toggle Replay mode
+
+## Accessibility Settings
+Open the floating ? button (bottom-left) to toggle:
+- High contrast mode
+- Reduce motion
+
+These preferences are applied instantly. (Persist can be added via localStorage if required.)
+
+## Screen Readers
+- AI feedback bar uses `aria-live="polite"` to announce new feedback.
+- Panels are labeled via `role="region"` and `aria-labelledby`.
+- Dialogs are implemented with Radix and trap focus.
+
+## Reduced Motion
+When Reduce Motion is enabled (or system preference is set), non-essential animations are toned down.
+
+## Audits
+First run a production preview, then run a headless Lighthouse audit:
+
+```powershell
+npm run build
+npm run preview
+npm run audit:accessibility
+```
+
+## Notes
+- Touch targets for core controls meet 44x44 px where practical.
+- Timeline is horizontally scrollable on mobile.
+- Color contrast is improved in High Contrast mode.
 # Physio Tracker UI
 
 Next‑gen React 18 + Vite frontend, optimized for design, animation, responsiveness, and developer productivity.

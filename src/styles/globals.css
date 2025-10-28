@@ -2,38 +2,283 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; --bg-start: #ecfdf5; --bg-end: #ffffff; }
-
-html, body, #root { height: 100%; }
-
-html, body {
-  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
-  color: #0b1020;
-  font-family: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-  transition: background 500ms ease-in-out, color 300ms ease-in-out;
+:root {
+  color-scheme: light;
+  --bg-start: #ecfdf5;
+  --bg-end: #ffffff;
 }
 
-.dark html, .dark body, .dark {
-  --bg-start: #0f172a; --bg-end: #1e1b4b;
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html,
+body {
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  color: #0b1020;
+  font-family:
+    'Inter',
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif;
+  transition:
+    background 500ms ease-in-out,
+    color 300ms ease-in-out;
+}
+
+.dark html,
+.dark body,
+.dark {
+  --bg-start: #0f172a;
+  --bg-end: #1e1b4b;
   background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
   color: #fff;
 }
 
+/* High-contrast theme helper: toggled by adding .hc on html */
+.hc body {
+  color: #ffffff;
+}
+.hc .glass {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 6px 36px rgba(0, 255, 255, 0.16);
+}
+.hc .focus-ring,
+.hc :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.55) !important;
+}
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
 @layer utilities {
-  .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.10); box-shadow: 0 4px 30px rgba(99,102,241,0.15); }
-  .glass-soft { background: rgba(255,255,255,0.06); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.08); }
-  .shadow-glow { box-shadow: 0 0 15px rgba(99,102,241,0.4); }
-  .gradient-brand { background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); }
-  .gradient-sweep { background-image: linear-gradient(90deg, #34d399, #8b5cf6, #06b6d4); background-size: 200% 100%; transition: background-position 700ms ease; }
-  .gradient-sweep:hover { background-position: 100% 0; }
-  .shimmer-border { pointer-events: none; background: linear-gradient(90deg, rgba(99,102,241,0), rgba(99,102,241,0.6), rgba(99,102,241,0)); filter: blur(6px); animation: shimmer 2.2s linear infinite; }
-  @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-  .animate-soft-bounce { animation: soft-bounce 2.4s ease-in-out infinite; }
-  @keyframes soft-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2%); } }
-  .h1 { font-family: 'Poppins','Plus Jakarta Sans','Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; letter-spacing:-0.01em; font-size:2.5rem; line-height:1.15; font-weight:700; }
-  @media (min-width: 768px) { .h1 { font-size: 3rem; } }
-  .h2 { font-family: 'Poppins','Plus Jakarta Sans','Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; font-size:1.75rem; line-height:1.2; font-weight:600; }
-  @media (min-width: 768px) { .h2 { font-size: 2rem; } }
-  .muted { color: rgba(255,255,255,0.7); }
-  .ds-p { font-family: 'Inter','Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; font-size:1rem; line-height:1.6; color:#E5E7EB; }
+  /* GPU Acceleration & Performance Optimization */
+  .gpu-accelerated {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Light mode glass: slightly darker translucent surfaces for contrast on light backgrounds */
+  .glass {
+    background: rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 4px 30px rgba(2, 6, 23, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .glass-soft {
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  /* Dark mode glass: enhanced with depth layers */
+  .dark .glass {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 4px 30px rgba(99, 102, 241, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 8px 16px -4px rgba(0, 0, 0, 0.3);
+  }
+  .dark .glass-soft {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+  }
+  .shadow-ai {
+    box-shadow:
+      0 8px 32px rgba(99, 102, 241, 0.2),
+      0 0 0 1px rgba(99, 102, 241, 0.1);
+  }
+
+  .gradient-brand {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  }
+  .gradient-sweep {
+    background-image: linear-gradient(90deg, #34d399, #8b5cf6, #06b6d4);
+    background-size: 200% 100%;
+    transition: background-position 700ms ease;
+  }
+  .gradient-sweep:hover {
+    background-position: 100% 0;
+  }
+
+  /* Enhanced button hover/tap effects */
+  button:not(:disabled):hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  button:not(:disabled):active {
+    transform: scale(0.98);
+    transition: all 0.1s ease;
+  }
+
+  .shimmer-border {
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(99, 102, 241, 0),
+      rgba(99, 102, 241, 0.6),
+      rgba(99, 102, 241, 0)
+    );
+    filter: blur(6px);
+    animation: shimmer 2.2s linear infinite;
+  }
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-soft-bounce {
+    animation: soft-bounce 2.4s ease-in-out infinite;
+  }
+  @keyframes soft-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2%);
+    }
+  }
+
+  /* Holographic effects */
+  .holographic-text {
+    background: linear-gradient(90deg, #ec4899, #a855f7, #3b82f6, #06b6d4);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: holographic-shift 6s linear infinite;
+  }
+  @keyframes holographic-shift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Button ripple */
+  .ripple-container {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-ripple {
+    position: absolute;
+    pointer-events: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    transform: translate(-50%, -50%) scale(0);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.2) 40%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    animation: btn-ripple 600ms ease-out forwards;
+  }
+  @keyframes btn-ripple {
+    0% {
+      opacity: 0.7;
+      transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(6);
+    }
+  }
+
+  .h1 {
+    font-family:
+      'Poppins',
+      'Plus Jakarta Sans',
+      'Inter',
+      system-ui,
+      -apple-system,
+      Segoe UI,
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
+    letter-spacing: -0.01em;
+    font-size: 2.5rem;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+  @media (min-width: 768px) {
+    .h1 {
+      font-size: 3rem;
+    }
+  }
+  .h2 {
+    font-family:
+      'Poppins',
+      'Plus Jakarta Sans',
+      'Inter',
+      system-ui,
+      -apple-system,
+      Segoe UI,
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    font-weight: 600;
+  }
+  @media (min-width: 768px) {
+    .h2 {
+      font-size: 2rem;
+    }
+  }
+  .muted {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .ds-p {
+    font-family:
+      'Inter',
+      'Plus Jakarta Sans',
+      system-ui,
+      -apple-system,
+      Segoe UI,
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #e5e7eb;
+  }
 }

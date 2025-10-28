@@ -2,9 +2,9 @@ import { cubicBezier } from 'framer-motion'
 
 export const timings = {
   fast: 0.15,
-  medium: 0.3,
+  medium: 0.45,
   long: 0.8,
-  page: 2.0,
+  page: 0.6,
 }
 
 export const easings = {
