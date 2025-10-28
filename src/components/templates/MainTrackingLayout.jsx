@@ -13,10 +13,10 @@ export default function MainTrackingLayout({ left, right, footer }) {
         layout
         transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
-        <section className="col-span-12 lg:col-span-7 flex flex-col gap-6">
+        <section className="col-span-12 lg:col-span-8 flex flex-col gap-6">
           {left}
         </section>
-        <aside className="col-span-12 lg:col-span-5 flex flex-col gap-6">
+        <aside className="col-span-12 lg:col-span-4 flex flex-col gap-6">
           {right}
         </aside>
       </motion.main>

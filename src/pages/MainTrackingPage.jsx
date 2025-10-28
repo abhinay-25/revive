@@ -1,22 +1,24 @@
 import React from 'react'
 import MainTrackingLayout from '../components/templates/MainTrackingLayout'
 import VideoSection from '../components/organisms/VideoSection'
-import ExerciseStatsPanel from '../components/molecules/ExerciseStatsPanel'
-import FeedbackBubble from '../components/molecules/FeedbackBubble'
-import EndSessionModal from '../components/organisms/EndSessionModal'
+import MetricsPanel from '../components/organisms/MetricsPanel'
+import FeedbackPanel from '../components/organisms/FeedbackPanel'
+import BottomBar from '../components/organisms/BottomBar'
 
 export default function MainTrackingPage() {
   return (
     <MainTrackingLayout
       left={<>
         <VideoSection />
-        <ExerciseStatsPanel />
       </>}
       right={<>
-        <FeedbackBubble />
-        <EndSessionModal />
+        <MetricsPanel />
+        <FeedbackPanel />
       </>}
-      footer={<footer className="container py-10 text-center text-xs text-white/60">Built with Vite + React + Tailwind + Framer Motion + Zustand</footer>}
+      footer={<>
+        <footer className="container py-10 text-center text-xs text-white/60">Built with Vite + React + Tailwind + Framer Motion + Zustand</footer>
+        <BottomBar />
+      </>}
     />
   )
 }
